@@ -2,7 +2,9 @@ camel:
   springboot:
     name: ssl-client
 #  component:
-#    http.ssl-context-parameters: clientConfig
+#    http:
+#      ssl-context-parameters: clientConfig
+#      use-global-ssl-context-parameters: true
 management:
   endpoint:
     camelroutes:
@@ -10,3 +12,9 @@ management:
       read-only: true
     health.enabled: true
   endpoints.web.exposure.include: info,health,camelroutes
+
+logging:
+  level:
+    org.apache.camel.support.jsse: TRACE
+
+
