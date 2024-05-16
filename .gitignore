@@ -27,6 +27,7 @@ target
 ssl
 
 *.jks
+*.pem
 
 .idea
 *.iml

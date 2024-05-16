@@ -14,18 +14,22 @@
 ./setup-certificates.sh ssl/server.jks ssl/client.jks
 ----
 
-== run server app
+== run application in one way ssl (server validation on client side)
 
 [source,bash]
 ----
 mvn spring-boot:run -f ssl-server/pom.xml
+
+mvn spring-boot:run -f ssl-client/pom.xml
 ----
 
-== run client app
+== run application in two ways ssl (mutual validation)
 
 [source,bash]
 ----
-mvn spring-boot:run -f ssl-client/pom.xml
+mvn spring-boot:run -f ssl-server/pom.xml -Ptwoways
+
+mvn spring-boot:run -f ssl-client/pom.xml -Ptwoways
 ----
 
 == start request
@@ -34,3 +38,7 @@ mvn spring-boot:run -f ssl-client/pom.xml
 ----
 curl http://localhost:8080/ping
 ----
+
+== tips
+
+to show the full handshake it is possible to add `-Dspring-boot.run.jvmArguments="-Djavax.net.debug=ssl"` in the start command line

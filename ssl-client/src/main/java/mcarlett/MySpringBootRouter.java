@@ -21,7 +21,7 @@ public class MySpringBootRouter extends RouteBuilder {
                 .to("direct:call-ssl-server");
 
         from("direct:call-ssl-server")
-                .to("https://localhost:8443/ping?bridgeEndpoint=true&sslContextParameters=#clientConfig");
+                .to("https://localhost:8443/ping?bridgeEndpoint=true");
     }
 
 }
