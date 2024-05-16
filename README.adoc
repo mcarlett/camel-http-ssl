@@ -1,0 +1,36 @@
+= camel-http-ssl
+
+== generate certificates
+
+[source,bash]
+----
+./generate-certificates.sh ssl
+----
+
+== copy keystores in applications
+
+[source,bash]
+----
+./setup-certificates.sh ssl/server.jks ssl/client.jks
+----
+
+== run server app
+
+[source,bash]
+----
+mvn spring-boot:run -f ssl-server/pom.xml
+----
+
+== run client app
+
+[source,bash]
+----
+mvn spring-boot:run -f ssl-client/pom.xml
+----
+
+== start request
+
+[source,bash]
+----
+curl http://localhost:8080/ping
+----

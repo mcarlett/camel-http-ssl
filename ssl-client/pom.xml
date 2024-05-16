@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>mcarlett</groupId>
+  <artifactId>ssl-client</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>ssl-client</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
+    <spring.boot-version>3.2.5</spring.boot-version>
+    <jkube.generator.from>registry.access.redhat.com/ubi8/openjdk-17:latest</jkube.generator.from>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.redhat.camel.springboot.platform</groupId>
+        <artifactId>camel-spring-boot-bom</artifactId>
+        <version>4.4.0.redhat-00014</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+
+    <!-- Spring Boot -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-undertow</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <!-- Camel -->
+    <dependency>
+      <groupId>org.apache.camel.springboot</groupId>
+      <artifactId>camel-spring-boot-starter</artifactId>
+    </dependency>
+    <!-- to expose rest services -->
+    <dependency>
+      <groupId>org.apache.camel.springboot</groupId>
+      <artifactId>camel-platform-http-starter</artifactId>
+    </dependency>
+    <!-- component used as client -->
+    <dependency>
+      <groupId>org.apache.camel.springboot</groupId>
+      <artifactId>camel-http-starter</artifactId>
+    </dependency>
+
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>redhat-ga</id>
+      <url>https://maven.repository.redhat.com/ga/</url>
+      <name>Red Hat GA repository</name>
+      <snapshots>
+          <enabled>false</enabled>
+      </snapshots>
+      <releases>
+          <enabled>true</enabled>
+      </releases>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>redhat-ga</id>
+      <url>https://maven.repository.redhat.com/ga/</url>
+      <name>Red Hat GA repository</name>
+      <snapshots>
+          <enabled>false</enabled>
+      </snapshots>
+      <releases>
+          <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring.boot-version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.redhat.camel.springboot.platform</groupId>
+        <artifactId>patch-maven-plugin</artifactId>
+        <version>4.4.0.redhat-00014</version>
+        <extensions>true</extensions>
+        <configuration>
+          <skip>false</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>openshift</id>
+      <build>
+        <defaultGoal>install</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.jkube</groupId>
+            <artifactId>openshift-maven-plugin</artifactId>
+            <version>1.16.1.redhat-00018</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>resource</goal>
+                  <goal>build</goal>
+                  <goal>apply</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
