@@ -12,6 +12,7 @@
 	<modules>
 		<module>ssl-server</module>
 		<module>ssl-client</module>
-	</modules>
+        <module>ssl-camel-server</module>
+    </modules>
 
 </project>
